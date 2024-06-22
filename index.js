@@ -1,4 +1,5 @@
-const express = require('express')
+const express = require('express');
+const cors = require("cors");
 const axios = require('axios');
 const bodyParser = require("body-parser");
 const app = express();
@@ -8,6 +9,15 @@ app.use(bodyParser.json());
 // port number
 const port  = 3000;
 
+app.use(
+    cors({
+      //Link of the main origin from where it can be requested
+      origin: ['http://localhost:5173'],
+      methods: ["GET", "POST", "PUT", "DELETE"],
+      credentials: true,
+    })
+  );
+
 //  root link checking
 app.get('/', (req, res) => {
     res.send("Server is listening on port " +port);
@@ -15,16 +25,15 @@ app.get('/', (req, res) => {
 
 // calling products :
 app.post('/auth', async(req, res) => {
-    const {companyName,clientID,clientSecret,ownerName,ownerEmail,rollNo} = req.body;
     const auth = "http://20.244.56.144/test/auth";
     try {
         const response = await axios.post(auth, {
-            companyName: companyName,
-            clientID: clientID,
-            clientSecret: clientSecret,
-            ownerName: ownerName,
-            ownerEmail: ownerEmail,
-            rollNo: rollNo
+            companyName: "ACE ENGINEERING COLLEGE",
+            clientID: "3c15c767-258f-4f28-a4ec-1337eaf0cdad",
+            clientSecret: "yoaHaPJAzHaRmQwE",
+            ownerName: "PAVAN VANAM",
+            ownerEmail: "pavanvanam890@gmail.com",
+            rollNo: "21AG1A0563"
         });
         const products = response.data; // Assuming the API returns an array of products
         console.log(products);
